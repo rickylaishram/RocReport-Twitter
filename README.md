@@ -1,7 +1,7 @@
-rocreport-twitter
+rocreport
 =================
 
-The part of rocreport that handles twitter searches
+Part of rocreport that runs on the server
 
 License
 ================
