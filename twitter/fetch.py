@@ -4,14 +4,14 @@
 from twython import Twython
 import json, requests, time, urllib, chardet
 
-CONSUMER_KEY = "b7j8A13m2oNa9QVnd24JA"
-CONSUMER_SCERET = "TAqQuQOpdh0AaYm0iUwOdBeBLlz13vdj7AjObYEPY"
-ACCESS_TOKEN = "17209342-mqxao8GXjNj1kRRBnVDlJGKT374XUx2eCnutl6n1T"
-ACCESS_TOKEN_SECRET = "WHuH575RIOuEZe3jGsr65UKDsjZPlQOyP7nYjkyV5mdEx"
+CONSUMER_KEY = ""
+CONSUMER_SCERET = ""
+ACCESS_TOKEN = ""
+ACCESS_TOKEN_SECRET = ""
 
-API_ENDPOINT_Add = "http://50.116.30.36/rocreport/addupdate/"
-EMAIL = "twitter_user@rocrepo.rt"
-PASSWORD = "twitter_user"
+API_ENDPOINT_Add = ""
+EMAIL = ""
+PASSWORD = ""
 
 HASHTAG = "#rocreport"
 
