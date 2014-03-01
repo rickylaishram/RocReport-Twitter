@@ -1,7 +1,9 @@
-rocreport
+RocReport Twitter
 =================
 
-Part of rocreport that runs on the server
+Twitter integration for RocReport
+
+The code for the RocReport backend has beenmoved to https://github.com/rickylaishram/RocReport-Server
 
 License
 ================
