@@ -5,6 +5,13 @@ Twitter integration for RocReport
 
 The code for the RocReport backend has beenmoved to https://github.com/rickylaishram/RocReport-Server
 
+## Requirements
+sixohsix's Python Twitter Tools https://github.com/sixohsix/twitter
+
+Install with
+	pip install twitter
+
+
 ## Configuration (data.py)
 
 Create a file data.py, or rename data-sample.py to data.py.
