@@ -4,14 +4,16 @@
 from twython import Twython
 import json, requests, time, urllib, chardet
 
-CONSUMER_KEY = ""
-CONSUMER_SCERET = ""
-ACCESS_TOKEN = ""
-ACCESS_TOKEN_SECRET = ""
+import data
 
-API_ENDPOINT_Add = ""
-EMAIL = ""
-PASSWORD = ""
+CONSUMER_KEY = data.CONSUMER_KEY
+CONSUMER_SCERET = data.CONSUMER_SCERET
+ACCESS_TOKEN = data.ACCESS_TOKEN
+ACCESS_TOKEN_SECRET = data.ACCESS_TOKEN_SECRET
+
+API_ENDPOINT_Add = data.API_ENDPOINT_Add
+EMAIL = data.EMAIL
+PASSWORD = data.PASSWORD
 
 HASHTAG = "#rocreport"
 
@@ -21,9 +23,6 @@ def fetchTweetsN():
 
 	since = f.read()
 	since = int(since.strip())
-	print since
-	#print type(int(since))
-	#since = 0
 	twitter = Twython(CONSUMER_KEY, CONSUMER_SCERET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 	response = twitter.search(q=HASHTAG, result_type='recent', count='100', include_entities=1, since_id=since)
 
