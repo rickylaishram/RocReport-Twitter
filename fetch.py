@@ -1,65 +1,75 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from twython import Twython
-import json, requests, time, urllib, chardet
+from twitter import *
+import json, requests, time, urllib, chardet, sqlite3, sys
+import data, database
 
-import data
+def get_since():
+	d = database.Database()
+	d.connect()
+	since = d.get_since()
+	d.close()
+	return since
 
-CONSUMER_KEY = data.CONSUMER_KEY
-CONSUMER_SCERET = data.CONSUMER_SCERET
-ACCESS_TOKEN = data.ACCESS_TOKEN
-ACCESS_TOKEN_SECRET = data.ACCESS_TOKEN_SECRET
+def set_since(since):
+	d = database.Database()
+	d.connect()
+	d.set_since(since)
+	d.close()
 
-API_ENDPOINT_Add = data.API_ENDPOINT_Add
-EMAIL = data.EMAIL
-PASSWORD = data.PASSWORD
+def fetch_tweets(location):
 
-HASHTAG = "#rocreport"
+	auth = OAuth(
+		consumer_key = data.TwitterData.api_key,
+		consumer_secret = data.TwitterData.api_secret,
+		token = data.TwitterData.access_token,
+		token_secret = data.TwitterData.access_token_secret
+	)
 
-def fetchTweetsN():
+	t = Twitter(auth = auth)
 
-	f = open('/root/rocreport-twitter/sincefile.txt', 'r')
+	since = get_since()
+	
+	tweets = t.search.tweets(q=data.TwitterData.hashtag, result_type='recent', count='100', include_entities=1, since_id=since, geocode=data.Geo.location[location])
 
-	since = f.read()
-	since = int(since.strip())
-	twitter = Twython(CONSUMER_KEY, CONSUMER_SCERET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-	response = twitter.search(q=HASHTAG, result_type='recent', count='100', include_entities=1, since_id=since)
+	print tweets['search_metadata']
 
-	tweets = []
-	since_id = since
-	f.close()
-
-	for tweet in response['statuses']:
-		if since_id < tweet["id"]:
-			since_id = tweet["id"]
+	for tweet in tweets['statuses']:
 		
-		print (tweet["id"] > int(since))
-		#print tweet["text"]
-		#print tweet['geo']
-		if (tweet['geo'] is not None) and (tweet["id"] > int(since)):
-			photo_url = "1"
+		if since < tweet['id']:
+			since =  tweet['id']
+
+		if (tweet['geo'] is not None):
+			photo_url = None
 
 			try:
 				for item in tweet['entities']['media']:
 					photo_url = item['media_url']
 			except Exception, e:
 				pass
-			
-			print photo_url
-			data = urllib.urlencode({"rocrep_update_nat":"Twitter","rocrep_update_name":HASHTAG, "rocrep_update_more": tweet["text"], "rocrep_update_pic": photo_url, "rocrep_update_latlong": str(tweet["geo"]["coordinates"][0])+";"+str(tweet["geo"]["coordinates"][1]), "rocrep_update_location": "From Twitter", "ismobile": "yes", "emails": EMAIL, "passwords": PASSWORD})
-			u = urllib.urlopen(API_ENDPOINT_Add, data)
-			print u.read()
-			print data
 
-	f = open('/root/rocreport-twitter/sincefile.txt', 'w+b')
-	print str(since_id)
-	f.write(str(since_id))
-	f.close()
+			try:
+				latitude = tweet['geo']['coordinates'][0]
+				longitude = tweet['geo']['coordinates'][1]
+				message = tweet['text']
+				name = '@'+tweet['user']['screen_name']
 
+				#print latitude, longitude, message, name, photo_url
+				#print tweet['id']
+
+				update_server({'name': name, 'message': message, 'photo': photo_url, 'latitude': latitude, 'longitude': longitude})
+			except Exception, e:
+				pass
+	set_since(since)
+
+# Todo
+def update_server(data):
+	pass
 
 def main():
-	fetchTweetsN()
+	location = sys.argv[1]
+	fetch_tweets(location)
 
 if __name__ == '__main__':
- 	main()
+	main()

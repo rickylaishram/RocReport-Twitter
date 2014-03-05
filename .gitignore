@@ -1,3 +1,7 @@
 rocreport/uploads/*
 *apk
 data.py
+
+*.pyc
+
+*.db

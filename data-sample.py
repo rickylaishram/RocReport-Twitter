@@ -1,8 +1,21 @@
-CONSUMER_KEY = ""
-CONSUMER_SCERET = ""
-ACCESS_TOKEN = ""
-ACCESS_TOKEN_SECRET = ""
+class TwitterData():
+	api_key = ""
+	api_secret = ""
+	access_token = ""
+	access_token_secret = ""
 
-API_ENDPOINT_Add = ""
-EMAIL = ""
-PASSWORD = ""
+	hashtag = ""
+
+class RocData():
+	api_endpoint = ""
+	api_add = ""
+	email = ""
+	password = ""
+
+class DB():
+	name = ""
+
+class Geo():
+	location = {}
+
+	location['a'] = "latitude,longitude,radiusmi"
